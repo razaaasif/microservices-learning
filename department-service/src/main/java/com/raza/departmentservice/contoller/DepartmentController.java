@@ -1,10 +1,13 @@
 package com.raza.departmentservice.contoller;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +30,10 @@ public class DepartmentController {
 	public ResponseEntity<DepartmentDto> save(@RequestBody DepartmentDto dto) {
 		logger.info("Starts Data " + dto );
 		return new ResponseEntity<>(this.departmentService.saveDepartment(dto), HttpStatus.CREATED);
+	}
+	@GetMapping("/{code}")
+	public ResponseEntity<List<DepartmentDto>> getByCode(@PathVariable("code") String code){
+		logger.info("Code -> " +code);
+		return new ResponseEntity<>(this.departmentService.getByDepartmentCode(code),HttpStatus.FOUND);
 	}
 }

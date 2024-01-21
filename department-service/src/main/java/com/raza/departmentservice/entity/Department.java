@@ -16,7 +16,7 @@ public class Department {
 	@Column
 	private String departmentDescription;
 	@Column
-	private String departmentcode;
+	private String departmentCode;
 
 	public Department() {
 	}
@@ -24,7 +24,7 @@ public class Department {
 	public Department(Long id, String description, String code, String name) {
 		this.id = id;
 		this.departmentDescription = description;
-		this.departmentcode = code;
+		this.departmentCode = code;
 		this.departmentName = name;
 	}
 
@@ -52,12 +52,12 @@ public class Department {
 		this.departmentDescription = departmentDescription;
 	}
 
-	public String getDepartmentcode() {
-		return departmentcode;
+	public String getDepartmentCode() {
+		return departmentCode;
 	}
 
-	public void setDepartmentcode(String departmentcode) {
-		this.departmentcode = departmentcode;
+	public void setDepartmentCode(String departmentcode) {
+		this.departmentCode = departmentcode;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Department {
 		builder.append(", departmentDescription=");
 		builder.append(departmentDescription);
 		builder.append(", departmentcode=");
-		builder.append(departmentcode);
+		builder.append(departmentCode);
 		builder.append("]");
 		return builder.toString();
 	}
