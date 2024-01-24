@@ -5,17 +5,19 @@ public class EmployeeDto {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String departmentCode;
 
 	public EmployeeDto() {
 		// Auto-generated constructor stub
 	}
 
-	public EmployeeDto(Long id, String firstName, String lastName, String email) {
+	public EmployeeDto(Long id, String firstName, String lastName, String email, String departmentCode) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.departmentCode = departmentCode;
 	}
 
 	public Long getId() {
@@ -50,10 +52,18 @@ public class EmployeeDto {
 		this.email = email;
 	}
 
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
+	}
+
 	@Override
 	public String toString() {
 		return "EmployeeDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ "]";
+				+ ", departmentCode=" + departmentCode + "]";
 	}
 
 }

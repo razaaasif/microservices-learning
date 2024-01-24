@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raza.employeeservice.dto.EmployeeAndDepartment;
 import com.raza.employeeservice.dto.EmployeeDto;
 import com.raza.employeeservice.service.EmployeeService;
 
@@ -25,9 +26,16 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeDto> getById(@PathVariable("id") Long id) {
-		EmployeeDto dto = this.employeeService.getById(id);
-		return new ResponseEntity<>(dto, HttpStatus.FOUND);
+	public ResponseEntity<EmployeeAndDepartment> getById(@PathVariable("id") Long id) {
+		try {
+			System.out.println("getById() Id -> " + id);
+			EmployeeAndDepartment dto = this.employeeService.getEmployeeById(id);
+			return new ResponseEntity<>(dto, HttpStatus.FOUND);
+		} catch (Exception e) {
+			// Log the exception
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	}
 
