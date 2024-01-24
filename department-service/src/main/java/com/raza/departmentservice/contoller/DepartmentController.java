@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.raza.departmentservice.dto.DepartmentDto;
 import com.raza.departmentservice.service.service.DepartmentService;
- 
+
 @RestController
 @RequestMapping("/api/departments")
 public class DepartmentController {
 	private DepartmentService departmentService;
 	private static Logger logger = Logger.getLogger(DepartmentController.class.getName());
+
 	@Autowired
 	public DepartmentController(DepartmentService departmentService) {
 		this.departmentService = departmentService;
@@ -28,12 +29,13 @@ public class DepartmentController {
 
 	@PostMapping
 	public ResponseEntity<DepartmentDto> save(@RequestBody DepartmentDto dto) {
-		logger.info("Starts Data " + dto );
+		logger.info("Starts Data " + dto);
 		return new ResponseEntity<>(this.departmentService.saveDepartment(dto), HttpStatus.CREATED);
 	}
+
 	@GetMapping("/{code}")
-	public ResponseEntity<List<DepartmentDto>> getByCode(@PathVariable("code") String code){
-		logger.info("Code -> " +code);
-		return new ResponseEntity<>(this.departmentService.getByDepartmentCode(code),HttpStatus.FOUND);
+	public ResponseEntity<DepartmentDto> getByCode(@PathVariable("code") String code) {
+		logger.info("Code -> " + code);
+		return new ResponseEntity<>(this.departmentService.getByDepartmentCode(code).get(0), HttpStatus.FOUND);
 	}
 }
