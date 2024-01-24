@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.raza.employeeservice.dto.DepartmentDto;
 import com.raza.employeeservice.dto.EmployeeAndDepartment;
@@ -18,20 +18,17 @@ import com.raza.employeeservice.service.EmployeeService;
 public class EmployeeServiceImpl implements EmployeeService {
 
 	private final EmployeeRepository employeeRepository;
-	private final RestTemplate restTemplate;
 	private final Environment environment;
-
+	private final WebClient webClient;
 	private static final String DEPARTMENT_URL = "DEPARTMENT_URL";
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 	@Autowired
-	public EmployeeServiceImpl(EmployeeRepository employeeRepository, RestTemplate restTemplate,
-			Environment environment) {
-
+	public EmployeeServiceImpl(EmployeeRepository employeeRepository, Environment environment, WebClient webClient) {
 		this.employeeRepository = employeeRepository;
-		this.restTemplate = restTemplate;
 		this.environment = environment;
+		this.webClient = webClient;
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String url = environment.getProperty(DEPARTMENT_URL) + dto.getDepartmentCode();
 		System.out.println("URL DEPARTMENT -> " + url);
 
-		DepartmentDto department = this.restTemplate.getForEntity(url, DepartmentDto.class).getBody();
+		DepartmentDto department = this.webClient.get().uri(url).retrieve().bodyToMono(DepartmentDto.class).block();
 
 		return new EmployeeAndDepartment(dto, department);
 	}
