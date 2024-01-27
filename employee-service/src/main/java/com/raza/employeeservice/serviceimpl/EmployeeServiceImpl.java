@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.raza.employeeservice.dto.DepartmentDto;
 import com.raza.employeeservice.dto.EmployeeAndDepartment;
 import com.raza.employeeservice.dto.EmployeeDto;
 import com.raza.employeeservice.entity.Employee;
+import com.raza.employeeservice.feignclients.DepartmentClient;
 import com.raza.employeeservice.repository.EmployeeRepository;
 import com.raza.employeeservice.service.EmployeeService;
 
@@ -19,16 +19,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	private final EmployeeRepository employeeRepository;
 	private final Environment environment;
-	private final WebClient webClient;
+	private final DepartmentClient departmentClient;
 	private static final String DEPARTMENT_URL = "DEPARTMENT_URL";
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 	@Autowired
-	public EmployeeServiceImpl(EmployeeRepository employeeRepository, Environment environment, WebClient webClient) {
+	public EmployeeServiceImpl(EmployeeRepository employeeRepository, Environment environment,
+			DepartmentClient client) {
 		this.employeeRepository = employeeRepository;
 		this.environment = environment;
-		this.webClient = webClient;
+		this.departmentClient = client;
 	}
 
 	@Override
@@ -48,9 +49,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String url = environment.getProperty(DEPARTMENT_URL) + dto.getDepartmentCode();
 		System.out.println("URL DEPARTMENT -> " + url);
 
-		DepartmentDto department = this.webClient.get().uri(url).retrieve().bodyToMono(DepartmentDto.class).block();
+		// web client
+		// DepartmentDto department =
+		// this.webClient.get().uri(url).retrieve().bodyToMono(DepartmentDto.class).block();
 
-		return new EmployeeAndDepartment(dto, department);
+		// departmentClient - OpenFeignClient
+		DepartmentDto DDto = this.departmentClient.getDepartmentByCode(dto.getDepartmentCode());
+
+		return new EmployeeAndDepartment(dto, DDto);
 	}
 
 	private Employee createEmployee(EmployeeDto dto) {

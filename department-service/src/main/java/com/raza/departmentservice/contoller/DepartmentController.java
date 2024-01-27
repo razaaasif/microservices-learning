@@ -36,6 +36,6 @@ public class DepartmentController {
 	@GetMapping("/{code}")
 	public ResponseEntity<DepartmentDto> getByCode(@PathVariable("code") String code) {
 		logger.info("Code -> " + code);
-		return new ResponseEntity<>(this.departmentService.getByDepartmentCode(code).get(0), HttpStatus.FOUND);
+		return new ResponseEntity<>(this.departmentService.getByDepartmentCode(code).get(0), HttpStatus.OK);
 	}
 }
