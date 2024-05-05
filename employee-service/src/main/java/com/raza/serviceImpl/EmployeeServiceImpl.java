@@ -16,8 +16,8 @@ import com.raza.service.feignclient.APIClient;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private EmployeeRepository employeeRepository;
-	private APIClient apiClient;
+	private final EmployeeRepository employeeRepository;
+	private final APIClient apiClient;
 
 	public EmployeeServiceImpl(EmployeeRepository employeeRepository, APIClient apiClient) {
 		this.employeeRepository = employeeRepository;
@@ -33,12 +33,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public ApiResponse getEmployeeById(Long id) {
-		Employee emp = this.employeeRepository.findById(id).get();
-
-		DepartmentDto departmentDto = apiClient.getDepartment(emp.getDepartmentCode());
-
-		ApiResponse apiResponse = new ApiResponse(EmployeeConvertor.getEmployeeDto(emp), departmentDto);
-		return apiResponse;
+		Employee emp = this.employeeRepository.findById(id).orElseGet(null);
+		DepartmentDto departmentDto = null ;
+		if(emp != null && emp.getDepartmentCode() != null)
+        	departmentDto = apiClient.getDepartment(emp.getDepartmentCode());
+		return new ApiResponse(EmployeeConvertor.getEmployeeDto(emp), departmentDto);
 	}
 
 }

@@ -12,7 +12,7 @@ import com.raza.department.dto.DepartmentDto;
 import com.raza.department.service.DepartmentService;
 
 @RestController
-@RequestMapping("api/departments")
+@RequestMapping("/api/departments")
 public class DepartmentController {
 
 	@Autowired
